@@ -1,7 +1,7 @@
 const express = require('express');
 
 //import our local router file
-const routes = require('./routes/global.js');
+const routes = require('./routes/global');
 
 //init express app
 const app = express();
