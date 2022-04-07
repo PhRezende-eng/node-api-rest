@@ -1,9 +1,19 @@
 const express = require('express');
+
+//import our local router file
+const routes = require('./routes/global.js');
+
+//init express app
 const app = express();
 
-app.listen(3000, () => console.log('Server is running in PORT 3000 🚀'));
+//allows express to work with json
+app.use(express.json());
 
-app.get('/', (req, res) => res.json({ name: 'Paulo henrique' }));
+//router
+app.use(routes);
 
-app.get('/api', (req, res) => res.send('API online'));
+//it will export our app/express to import into server.js
+module.exports = app;
+
+
 
