@@ -1,7 +1,9 @@
-const express = require('express');
+// const express = require('express');
+import express from 'express';
 
 //import our local router file
-const routes = require('./routes/global');
+// const routes = require('./routes/global');
+import routes from './routes';
 
 //init express app
 const app = express();
@@ -13,7 +15,8 @@ app.use(express.json());
 app.use(routes);
 
 //it will export our app/express to import into server.js
-module.exports = app;
+// module.exports = app;
+export default app;
 
 
 

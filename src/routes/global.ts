@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const controller = require('../controller/global');
+import controller from '../controller/global';
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.get('/', controller.responseHome);
 
 router.get('/api', controller.responseApi);
 
-module.exports = router;
+export default router;
