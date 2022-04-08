@@ -1,10 +1,10 @@
-class Routes {
+class Controllers {
     static responseApi(req: any, res: any) { res.json({ name: 'Paulo Henrique' }) };
 
     static responseHome(req: any, res: any) { res.send('<h2>API is running</h2>'); };
 }
 
-export default Routes;
+export default Controllers;
 
 
 // const globalController = {
