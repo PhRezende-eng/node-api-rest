@@ -52,6 +52,7 @@ class ProductController {
         const { name, price } = req.body;
         console.log(req.body);
 
+
         const product = products.find((product: any) => product.id == id);
 
         if (product) {
@@ -70,9 +71,32 @@ class ProductController {
         console.log();
     };
 
-    static resGetCurrentProduct(req: any, res: any) { };
+    static resGetCurrentProduct(req: any, res: any) {
+        const { id } = req.params;
 
-    static resDeleteProduct(req: any, res: any) { };
+        const product = products.find((product: any) => product.id == id);
+
+        res.status(200).json({
+            status: 'success',
+            data: { product },
+        });
+    };
+
+    static resDeleteProduct(req: any, res: any) {
+        const { id } = req.params;
+
+        const product = products.find((product: any) => product.id == id);
+
+        if (product) {
+            products.splice(products.indexOf(product), 1);
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Product deleted!',
+        });
+
+    };
 
 };
 
