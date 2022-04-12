@@ -1,6 +1,6 @@
 import app from './app';
 
-import connectToDataBase from './mongodb/connection/connection';
+import connectToDataBase from './database/connection/connection';
 
 const port = 3000;
 
