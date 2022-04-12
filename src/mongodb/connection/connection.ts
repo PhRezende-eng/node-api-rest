@@ -1,7 +1,9 @@
 import { MongoClient } from 'mongodb';
 
+import 'dotenv/config'
+
 async function connection() {
-    const uri = '';
+    const uri = `${process.env.CONNECTION_TO_DATABASE}`;
 
     const client = new MongoClient(uri);
 
