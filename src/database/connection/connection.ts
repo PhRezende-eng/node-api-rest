@@ -14,8 +14,8 @@ async function connection() {
     try {
         await client.connect();
         // await listDatabase(client);
-        // await findOndeDocumentOnCollection(client, 'sample_mflix', 'movies', 'Back to the Future');
-        // await createListing(client, 'sample_airbnb', 'listingsAndReviews', {
+        // await findOneDocument(client, 'sample_mflix', 'movies', 'Back to the Future');
+        // await createDocument(client, 'sample_airbnb', 'listingsAndReviews', {
         //     _id: 1,
         //     name: 'Paulo henrique',
         //     age: 21,
@@ -35,14 +35,14 @@ async function connection() {
 
 }
 
-async function createListing(client: MongoClient, dataBase: String, collection: String, object: Object) {
+async function createDocument(client: MongoClient, dataBase: String, collection: String, object: Object) {
     const result = client.db(`${dataBase}`);
     const getCollection = result.collection(`${collection}`);
     const response = await getCollection.insertOne(object);
     console.log(response);
 }
 
-async function findOndeDocumentOnCollection(cliente: MongoClient, dataBase: String, collection: String, title: any) {
+async function findOneDocument(cliente: MongoClient, dataBase: String, collection: String, title: any) {
     const result = cliente.db(`${dataBase}`);
     const getCollection = result.collection(`${collection}`);
     const query = { title: title };
@@ -51,10 +51,10 @@ async function findOndeDocumentOnCollection(cliente: MongoClient, dataBase: Stri
 }
 
 async function listDatabase(client: MongoClient) {
-    const databasesList = await client.db().admin().listDatabases();
-
-    console.log('Database: ');
-    databasesList.databases.forEach(db => console.log(`- ${db.name}`))
+    const databasesList = client.db();
+    const accessAdmin = databasesList.admin();
+    const response = await accessAdmin.listDatabases();
+    response.databases.forEach(db => console.log(`- ${db.name}`))
 }
 
 export default connection;
