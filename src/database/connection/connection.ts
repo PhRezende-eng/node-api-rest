@@ -14,40 +14,60 @@ async function connection() {
     try {
         await client.connect();
         // await listDatabase(client);
-        // await findOneDocument(client, 'sample_mflix', 'movies', 'Back to the Future');
-        // await insertDocumento(client, 'sample_airbnb', 'listingsAndReviews', {
+        // await findOneDocument(client, 'sample_mflix', 'movies',{ title: 'Back to the Future' });
+        await readDocument(client, 'sample_mflix', 'movies', { title: 'Back to the Future' });
+        // await insertDocument(client, 'sample_airbnb', 'listingsAndReviews',
+        // {
         //     _id: 1,
         //     name: 'Paulo henrique',
         //     age: 21,
-        //     male: true,
+        //     male: true,  
         // });
-
-
+        // await insertMultiplesDocuments(client, 'sample_airbnb', 'listingsAndReviews',
+        //[
+        //    {
+        //        _id: 1,
+        //        nome: "Paulo henrique"
+        //    },
+        //    {
+        //        _id: 2,
+        //        nome: "João Paulo"
+        //    }
+        //]);
     } catch (e) {
         console.error(`Catch Error ${e}`);
-
     } finally {
         console.log('Close connection');
         await client.close();
-
     }
-
-
 }
 
-async function insertDocumento(client: MongoClient, dataBase: String, collection: String, object: Object) {
+async function readDocument(client: MongoClient, dataBase: String, collection: String, query: Object) {
+    const result = client.db(`${dataBase}`);
+    const getCollection = result.collection(`${collection}`);
+    const response = await getCollection.findOne(query);
+    console.log(response ? response : `Not found document`);
+}
+
+async function insertMultiplesDocuments(client: MongoClient, dataBase: String, collection: String, multiplesDocuments: Array<Object>) {
+    const result = client.db(`${dataBase}`);
+    const getCollection = result.collection(`${collection}`);
+    const response = await getCollection.insertMany(multiplesDocuments);
+    console.log(response.insertedIds);
+}
+
+async function insertDocument(client: MongoClient, dataBase: String, collection: String, object: Object) {
     const result = client.db(`${dataBase}`);
     const getCollection = result.collection(`${collection}`);
     const response = await getCollection.insertOne(object);
-    console.log(response);
+    console.log(response.insertedId);
 }
 
-async function findOneDocument(cliente: MongoClient, dataBase: String, collection: String, title: any) {
+async function findOneDocument(cliente: MongoClient, dataBase: String, collection: String, query: Object) {
     const result = cliente.db(`${dataBase}`);
     const getCollection = result.collection(`${collection}`);
-    const query = { title: title };
-    const movie = await getCollection.findOne(query);
-    console.log(movie);
+    const response = await getCollection.findOne(query);
+    console.log(response);
 }
 
 async function listDatabase(client: MongoClient) {
