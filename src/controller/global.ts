@@ -1,7 +1,7 @@
 class Controllers {
-    static resApi(req: Request, res: any) { res.json({ name: 'Paulo Henrique' }) };
+    static resApi(req: any, res: any) { res.json({ name: 'Paulo Henrique' }) };
 
-    static resHome(req: Request, res: any) { res.send('<h2>API is running</h2>'); };
+    static resHome(req: any, res: any) { res.send('<h2>API is running</h2>'); };
 }
 
 export default Controllers;
