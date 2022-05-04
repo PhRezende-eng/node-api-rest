@@ -2,52 +2,25 @@ import { MongoClient } from 'mongodb';
 
 import 'dotenv/config'
 
-const dontFound = 'Object not found!\n';
+const notFound = 'Object not found!\n';
 
 async function connection() {
     const uri = `${process.env.CONNECTION_TO_DATABASE}`;
 
     const client = new MongoClient(uri);
 
-
     console.log('Conectando com o dataBase...');
 
-    await client.connect();
 
     try {
         await client.connect();
-        // await createDocument(client, 'sample_airbnb', 'listingsAndReviews',
-        await readDocument(client, 'sample_mflix', 'movies', { title: 'Blacksmith Scene' });
-        // await updateDocument(client, 'sample_mflix', 'movies', { title: 'Blacksmith Scene' });
-        // await deleteDocument(client, 'sample_mflix', 'movies', { title: 'The Great Train Robbery' });
-
-
-        // await listDatabase(client);
-        // await findOneDocument(client, 'sample_mflix', 'movies',{ title: 'Blacksmith Scene' });
-        // {
-        //     _id: 1,
-        //     name: 'Paulo henrique',
-        //     age: 21,
-        //     male: true,  
-        // });
-        // await insertMultiplesDocuments(client, 'sample_airbnb', 'listingsAndReviews',
-        //[
-        //    {
-        //        _id: 1,
-        //        nome: "Paulo henrique"
-        //    },
-        //    {
-        //        _id: 2,
-        //        nome: "João Paulo"
-        //    }
-        //]);
+        return client;
     } catch (e) {
         console.error(`Catch Error ${e}`);
-    } finally {
-        console.log('Close connection');
-        await client.close();
+        throw `Catch Error ${e}`;
     }
 }
+
 
 async function createDocument(client: MongoClient, dataBase: String, collection: String, object: Object) {
     const result = client.db(`${dataBase}`);
@@ -58,7 +31,7 @@ async function createDocument(client: MongoClient, dataBase: String, collection:
         console.log(findResponse);
         console.log('Created!\n');
     } else {
-        console.log(dontFound);
+        console.log(notFound);
     }
 }
 
@@ -70,20 +43,20 @@ async function readDocument(client: MongoClient, dataBase: String, collection: S
         console.log(findResponse);
         console.log('Readed!\n');
     } else {
-        console.log(dontFound);
+        console.log(notFound);
     }
 }
 
 async function updateDocument(client: MongoClient, dataBase: String, collection: String, query: Object) {
     const result = client.db(`${dataBase}`);
     const getCollection = result.collection(`${collection}`);
-    const updateResponse = await getCollection.updateOne(query, { $set: { plot1: '123' } });
+    const updateResponse = await getCollection.updateOne(query, { $set: { _id: '6263799946d2e6014e5dd9fd' } });
     if (updateResponse != null) {
         const findResponse = await getCollection.findOne(query);
         console.log(findResponse);
         console.log('Updated!\n');
     } else {
-        console.log(dontFound);
+        console.log(notFound);
     }
 }
 
@@ -96,9 +69,11 @@ async function deleteDocument(client: MongoClient, dataBase: String, collection:
         console.log(findResponse);
         console.log('Deleted!\n');
     } else {
-        console.log(dontFound);
+        console.log(notFound);
     }
 }
+
+export default connection;
 
 // async function insertMultiplesDocuments(client: MongoClient, dataBase: String, collection: String, multiplesDocuments: Array<Object>) {
 //     const result = client.db(`${dataBase}`);
@@ -106,7 +81,6 @@ async function deleteDocument(client: MongoClient, dataBase: String, collection:
 //     const response = await getCollection.insertMany(multiplesDocuments);
 //     console.log(response.insertedIds);
 // }
-
 
 // async function findOneDocument(cliente: MongoClient, dataBase: String, collection: String, query: Object) {
 //     const result = cliente.db(`${dataBase}`);
@@ -122,4 +96,33 @@ async function deleteDocument(client: MongoClient, dataBase: String, collection:
 //     response.databases.forEach(db => console.log(`- ${db.name}`))
 // }
 
-export default connection;
+// await createDocument(client, 'sample_airbnb', 'listingsAndReviews',
+// await readDocument(client, 'sample_mflix', 'movies', { title: 'Blacksmith Scene' });
+// await updateDocument(client, 'ShopProject', 'orders', { date: '1643770663986' });
+// await deleteDocument(client, 'sample_mflix', 'movies', { title: 'The Great Train Robbery' });
+
+// const result = await getAllOrders(client, idQuery);
+
+// return result;
+
+// await listDatabase(client);
+
+// await findOneDocument(client, 'sample_mflix', 'movies', { title: 'Blacksmith Scene' });
+// {
+//     _id: 1,
+//         name: 'Paulo henrique',
+//             age: 21,
+//                 male: true,
+//         });
+
+// await insertMultiplesDocuments(client, 'sample_airbnb', 'listingsAndReviews',
+//     [
+//         {
+//             _id: 1,
+//             nome: "Paulo henrique"
+//         },
+//         {
+//             _id: 2,
+//             nome: "João Paulo"
+//         }
+//     ]);
