@@ -11,6 +11,7 @@ class OrdersFromDB {
 
             res.status(200).json({
                 status: "success",
+                count: listOrderMap.length,
                 data: listOrderMap,
             })
         } catch (e) {
