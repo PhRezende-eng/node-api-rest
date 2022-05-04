@@ -20,8 +20,26 @@ class OrdersFromDB {
             console.log('Close connection');
             await responseDB.close();
         }
+    };
 
+    static async getOneOrders(req: any, res: any) {
+        const responseDB = await connection();
+        const id = req.params.id;
 
+        try {
+            const orderMap = await OrdersPromises.readOneOrder(responseDB, id);
+
+            res.status(200).json({
+                status: "success",
+                data: orderMap,
+            })
+        } catch (e) {
+            console.error(`Catch Error ${e}`);
+            throw `Catch Error ${e}`;
+        } finally {
+            console.log('Close connection');
+            await responseDB.close();
+        }
     };
 }
 
