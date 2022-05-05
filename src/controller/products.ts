@@ -16,7 +16,7 @@ class ProductController {
     //list products
     static resGetAllProducts(req: any, res: any) {
         res.status(200).json({
-            status: "success",
+            statusMessage: "success",
             data: { products },
         })
     };
@@ -37,7 +37,7 @@ class ProductController {
         console.log('products', products);
 
         res.status(200).json({
-            status: "success",
+            statusMessage: "success",
             message: 'Product created!',
             data: { product }
         });
@@ -63,7 +63,7 @@ class ProductController {
         console.log('products', products);
 
         res.status(200).json({
-            status: "success",
+            statusMessage: "success",
             message: "Product updated!",
             data: { product },
         });
@@ -77,7 +77,7 @@ class ProductController {
         const product = products.find((product: any) => product.id == id);
 
         res.status(200).json({
-            status: 'success',
+            statusMessage: 'success',
             data: { product },
         });
     };
@@ -92,7 +92,7 @@ class ProductController {
         }
 
         res.status(200).json({
-            status: 'success',
+            statusMessage: 'success',
             message: 'Product deleted!',
         });
 
