@@ -1,8 +1,8 @@
 import connection from '../database/connection';
 
-import OrdersModule from '../database/module/orders-promises';
+import OrdersModule from '../database/module/orders-module';
 
-class OrdersFromDB {
+class OrdersController {
     static async getAllOrders(req: any, res: any) {
         const responseDB = await connection();
 
@@ -132,4 +132,4 @@ class OrdersFromDB {
     }
 }
 
-export default OrdersFromDB;
+export default OrdersController;

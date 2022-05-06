@@ -1,13 +1,13 @@
 import express from 'express';
 
-import OrdersFromDB from '../controller/orders-controllers';
+import OrdersController from '../controller/orders-controllers';
 
 const router = express.Router();
 
-router.get('/order/getOrders/', OrdersFromDB.getAllOrders);
-router.get('/order/getOrder/:id', OrdersFromDB.getOneOrder);
-router.put('/order/updateOrder/:id', OrdersFromDB.updateOrder);
-router.post('/order/createOrder/', OrdersFromDB.createOrder);
-router.delete('/order/deleteOrder/:id', OrdersFromDB.deleteOrder);
+router.get('/order/getOrders/', OrdersController.getAllOrders);
+router.get('/order/getOrder/:id', OrdersController.getOneOrder);
+router.put('/order/updateOrder/:id', OrdersController.updateOrder);
+router.post('/order/createOrder/', OrdersController.createOrder);
+router.delete('/order/deleteOrder/:id', OrdersController.deleteOrder);
 
 export default router;
