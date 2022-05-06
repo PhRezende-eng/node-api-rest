@@ -45,13 +45,13 @@ class OrdersModule {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
 
-        const id = new ObjectID().toString();
+        const id = new ObjectID().toString;
         order['_id'] = id;
 
         const createOrder = await getCollection.insertOne(order);
 
-        if (createOrder != null) {
-            const getNewOrder = await getCollection.findOne({ id: order['id'] });
+        if (createOrder.insertedId != null) {
+            const getNewOrder = await getCollection.findOne({ id: id });
             return getNewOrder;
         } else {
             throw 'Is not possible query the new order!';
@@ -67,7 +67,7 @@ class OrdersModule {
             await getCollection.deleteOne({ id: idFromParams });
             return getOrder;
         } else {
-            throw 'Is not possible query the new order!';
+            throw 'Is not possible query the order to delete!';
         }
     }
 }
