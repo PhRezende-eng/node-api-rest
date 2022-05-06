@@ -11,12 +11,17 @@ class OrdersFromDB {
 
             res.status(200).json({
                 statusMessage: 'success',
+                statusCode: 200,
                 count: listOrderMap.length,
                 data: listOrderMap,
             })
-        } catch (e) {
-            console.error(`Catch Error ${e}`);
-            throw `Catch Error ${e}`;
+        } catch (errorResponse) {
+
+            res.status(500).json({
+                statusMessage: 'badRequest',
+                statusCode: 500,
+                data: errorResponse,
+            });
         } finally {
             console.log('Close connection');
             await responseDB.close();
@@ -32,14 +37,15 @@ class OrdersFromDB {
 
             res.status(200).json({
                 statusMessage: 'success',
+                statusCode: 200,
                 data: orderMap,
-            })
-        } catch (e) {
+            });
+        } catch (errorResponse) {
 
-            res.json({
+            res.status(500).json({
                 statusMessage: 'badRequest',
                 statusCode: 500,
-                data: e,
+                data: errorResponse,
             });
         } finally {
             console.log('Close connection');
@@ -55,18 +61,18 @@ class OrdersFromDB {
         try {
             const orderMapUpdate = await OrdersModule.updateOneOrder(responseDB, id, body);
 
-            res.json({
+            res.status(200).json({
                 statusMessage: 'success',
                 statusCode: 200,
                 data: orderMapUpdate,
             });
 
-        } catch (e) {
+        } catch (errorResponse) {
 
-            res.json({
+            res.status(500).json({
                 statusMessage: 'badRequest',
                 statusCode: 500,
-                data: e,
+                data: errorResponse,
             });
 
         } finally {
@@ -75,17 +81,55 @@ class OrdersFromDB {
         }
     }
 
-    // static async createOrder(req: any, res: any) {
-    //     const responseDB = await connection();
-    //     const order = req.body;
-    //     res.status(200).json();
+    static async createOrder(req: any, res: any) {
+        const responseDB = await connection();
+        const order = req.body;
 
-    // }
+        try {
+            const createOrderResponse = await OrdersModule.createOneOrder(responseDB, order);
 
-    // static async deleteOrder(req: any, res: any) {
-    //     const responseDB = await connection();
-    //     const id = req.params.id;
-    // }
+            res.status(200).json({
+                statusMessage: 'success',
+                statusCode: 200,
+                data: createOrderResponse,
+            });
+        } catch (errorResponse) {
+            res.status(500).json({
+                statusMessage: 'badRequest',
+                statusCode: 500,
+                data: errorResponse,
+            });
+        } finally {
+            console.log('Close connection');
+            await responseDB.close();
+        }
+    }
+
+    static async deleteOrder(req: any, res: any) {
+        const responseDB = await connection();
+        const id = req.params.id;
+
+        try {
+            const deleteOrderResponse = await OrdersModule.deleteOneOrder(responseDB, id);
+
+            res.status(200).json({
+                statusMessage: 'success',
+                statusCode: 200,
+                data: deleteOrderResponse,
+            });
+        } catch (errorResponse) {
+
+            res.status(500).json({
+                statusMessage: 'badRequest',
+                statusCode: 500,
+                data: errorResponse,
+            });
+        } finally {
+
+            console.log('Close connection');
+            await responseDB.close();
+        }
+    }
 }
 
 export default OrdersFromDB;
