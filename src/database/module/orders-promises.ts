@@ -10,7 +10,7 @@ class OrdersModule {
             return getOrders;
         } else {
             console.log('Is not possible get all orders!');
-            throw 'Is not possible get all orders!';
+            throw 'Is not possible query all orders!';
         }
     }
 
@@ -21,21 +21,20 @@ class OrdersModule {
         if (getOrder != null) {
             return getOrder;
         } else {
-            console.log('Is not possible get the order!');
-            throw 'Is not possible get the order!';
+            throw 'Is not possible query the order!';
         }
     }
 
-    static async updateOneOrder(client: MongoClient, idFromParams: any, order: any) {
+    static async updateOneOrder(client: MongoClient, idFromParams: String, order: any) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        console.log(order)
-        const updateOrder = await getCollection.updateOne({ date: idFromParams }, { $set: order });
-        if (updateOrder.upsertedId != null) {
-            const getOrderToResponse = await getCollection.findOne({ date: idFromParams });
+        const updateOrder = await getCollection.updateOne({ id: idFromParams }, { $set: order });
+        console.log(updateOrder)
+        if (updateOrder.matchedCount > 0) {
+            const getOrderToResponse = await getCollection.findOne({ id: idFromParams });
             return getOrderToResponse;
         } else {
-            return "Is not possible update, order not found!";
+            throw 'Is not possible query the order!';
         }
     }
 }
