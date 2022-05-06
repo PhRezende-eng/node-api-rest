@@ -7,6 +7,7 @@ class OrdersModule {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
         const getOrders = await getCollection.find({}).toArray();
+
         if (getOrders != null) {
             return getOrders;
         } else {
@@ -19,6 +20,7 @@ class OrdersModule {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
         const getOrder = await getCollection.findOne({ id: idFromParams });
+
         if (getOrder != null) {
             return getOrder;
         } else {
@@ -30,6 +32,7 @@ class OrdersModule {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
         const updateOrder = await getCollection.updateOne({ id: idFromParams }, { $set: order });
+
         if (updateOrder.matchedCount > 0) {
             const getOrderToResponse = await getCollection.findOne({ id: idFromParams });
             return getOrderToResponse;
@@ -43,7 +46,7 @@ class OrdersModule {
         const getCollection = result.collection('orders');
 
         const id = new ObjectID().toString();
-        order['id'] = id;
+        order['_id'] = id;
 
         const createOrder = await getCollection.insertOne(order);
 
@@ -58,17 +61,14 @@ class OrdersModule {
     static async deleteOneOrder(client: MongoClient, idFromParams: String) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-
         const getOrder = await getCollection.findOne({ id: idFromParams });
 
-        // const createOrder = await getCollection.deleteOne({ getOrder });
-
-        console.log(getOrder);
-        // if (getOrder != null) {
-        //     return getOrder;
-        // } else {
-        //     throw 'Is not possible query the new order!';
-        // }
+        if (getOrder != null) {
+            await getCollection.deleteOne({ id: idFromParams });
+            return getOrder;
+        } else {
+            throw 'Is not possible query the new order!';
+        }
     }
 }
 
