@@ -1,4 +1,3 @@
-import { ObjectID } from 'bson';
 import { MongoClient } from 'mongodb';
 
 
@@ -11,7 +10,6 @@ class OrdersModule {
         if (getOrders != null) {
             return getOrders;
         } else {
-            console.log('Is not possible get all orders!');
             throw 'Is not possible query all orders!';
         }
     }
@@ -19,7 +17,7 @@ class OrdersModule {
     static async readOneOrder(client: MongoClient, idFromParams: String) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const getOrder = await getCollection.findOne({ id: idFromParams });
+        const getOrder = await getCollection.findOne({ _id: idFromParams });
 
         if (getOrder != null) {
             return getOrder;
@@ -31,10 +29,10 @@ class OrdersModule {
     static async updateOneOrder(client: MongoClient, idFromParams: String, order: any) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const updateOrder = await getCollection.updateOne({ id: idFromParams }, { $set: order });
+        const updateOrder = await getCollection.updateOne({ _id: idFromParams }, { $set: order });
 
         if (updateOrder.matchedCount > 0) {
-            const getOrderToResponse = await getCollection.findOne({ id: idFromParams });
+            const getOrderToResponse = await getCollection.findOne({ _id: idFromParams });
             return getOrderToResponse;
         } else {
             throw 'Is not possible query the order!';
@@ -45,13 +43,10 @@ class OrdersModule {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
 
-        const id = new ObjectID().toString;
-        order['_id'] = id;
-
         const createOrder = await getCollection.insertOne(order);
 
         if (createOrder.insertedId != null) {
-            const getNewOrder = await getCollection.findOne({ id: id });
+            const getNewOrder = await getCollection.findOne({ _id: order['_id'] });
             return getNewOrder;
         } else {
             throw 'Is not possible query the new order!';
@@ -61,10 +56,10 @@ class OrdersModule {
     static async deleteOneOrder(client: MongoClient, idFromParams: String) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const getOrder = await getCollection.findOne({ id: idFromParams });
+        const getOrder = await getCollection.findOne({ _id: idFromParams });
 
         if (getOrder != null) {
-            await getCollection.deleteOne({ id: idFromParams });
+            await getCollection.findOneAndDelete({ _id: idFromParams });
             return getOrder;
         } else {
             throw 'Is not possible query the order to delete!';

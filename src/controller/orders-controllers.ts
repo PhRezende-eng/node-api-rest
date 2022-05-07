@@ -1,6 +1,6 @@
 import connection from '../database/connection';
-
 import OrdersModule from '../database/module/orders-module';
+import { ObjectID } from 'bson';
 
 class OrdersController {
     static async getAllOrders(req: any, res: any) {
@@ -17,9 +17,9 @@ class OrdersController {
             })
         } catch (errorResponse) {
 
-            res.status(500).json({
+            res.status(404).json({
                 statusMessage: 'badRequest',
-                statusCode: 500,
+                statusCode: 404,
                 data: errorResponse,
             });
         } finally {
@@ -34,17 +34,16 @@ class OrdersController {
 
         try {
             const orderMap = await OrdersModule.readOneOrder(responseDB, id);
-
+            console.log(orderMap)
             res.status(200).json({
                 statusMessage: 'success',
                 statusCode: 200,
                 data: orderMap,
             });
         } catch (errorResponse) {
-
-            res.status(500).json({
+            res.status(404).json({
                 statusMessage: 'badRequest',
-                statusCode: 500,
+                statusCode: 404,
                 data: errorResponse,
             });
         } finally {
@@ -69,9 +68,9 @@ class OrdersController {
 
         } catch (errorResponse) {
 
-            res.status(500).json({
+            res.status(404).json({
                 statusMessage: 'badRequest',
-                statusCode: 500,
+                statusCode: 404,
                 data: errorResponse,
             });
 
@@ -83,7 +82,11 @@ class OrdersController {
 
     static async createOrder(req: any, res: any) {
         const responseDB = await connection();
+
+        const id = new ObjectID().toString();
         const order = req.body;
+
+        order['_id'] = id;
 
         try {
             const createOrderResponse = await OrdersModule.createOneOrder(responseDB, order);
@@ -94,9 +97,9 @@ class OrdersController {
                 data: createOrderResponse,
             });
         } catch (errorResponse) {
-            res.status(500).json({
+            res.status(404).json({
                 statusMessage: 'badRequest',
-                statusCode: 500,
+                statusCode: 404,
                 data: errorResponse,
             });
         } finally {
@@ -119,9 +122,9 @@ class OrdersController {
             });
         } catch (errorResponse) {
 
-            res.status(500).json({
+            res.status(404).json({
                 statusMessage: 'badRequest',
-                statusCode: 500,
+                statusCode: 404,
                 data: errorResponse,
             });
         } finally {
