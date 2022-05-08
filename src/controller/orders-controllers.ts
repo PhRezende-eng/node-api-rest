@@ -34,7 +34,6 @@ class OrdersController {
 
         try {
             const orderMap = await OrdersModule.readOneOrder(responseDB, id);
-            console.log(orderMap)
             res.status(200).json({
                 statusMessage: 'success',
                 statusCode: 200,

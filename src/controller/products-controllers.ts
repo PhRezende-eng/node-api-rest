@@ -34,7 +34,6 @@ class ProductsController {
 
         try {
             const productMap = await ProductsModule.readOneProduct(responseDB, id);
-            console.log(productMap)
             res.status(200).json({
                 statusMessage: 'success',
                 statusCode: 200,
