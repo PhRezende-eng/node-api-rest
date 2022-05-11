@@ -82,7 +82,7 @@ class OrdersController {
     static async createOrder(req: any, res: any) {
         const responseDB = await connection();
 
-        const id = new ObjectID().toString();
+        const id = new ObjectID();
         const order = req.body;
 
         order['_id'] = id;
