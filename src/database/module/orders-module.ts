@@ -20,67 +20,87 @@ class OrdersModule {
 
             return orders;
         } else {
-            throw 'Is not possible query all orders!';
+            throw 'Orders not found, is not possible read all orders!';
         }
     }
 
     static async readOneOrder(client: MongoClient, idFromParams: String) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const getOrder: any = await getCollection.findOne({ _id: new ObjectID(`${idFromParams}`) });
+
+        if (!ObjectID.isValid(`${idFromParams}`)) {
+            throw 'Invalid ID!';
+        }
+
+        const query = { _id: new ObjectID(`${idFromParams}`) };
+        const getOrder: any = await getCollection.findOne(query);
 
         if (getOrder != null) {
             getOrder['id'] = getOrder['_id'];
             delete getOrder['_id'];
             return getOrder;
         } else {
-            throw 'Is not possible query the order!';
+            throw 'Order not found, is not possible read the order!';
         }
     }
 
-    static async updateOneOrder(client: MongoClient, idFromParams: String, order: any) {
+    static async updateOneOrder(client: MongoClient, idFromParams: String, body: any) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const updateOrder = await getCollection.updateOne({ _id: new ObjectID(`${idFromParams}`) }, { $set: order });
+
+        if (!ObjectID.isValid(`${idFromParams}`)) {
+            throw 'Invalid ID!';
+        }
+
+        const query = { _id: new ObjectID(`${idFromParams}`) };
+        const updateOrder = await getCollection.updateOne(query, { $set: body });
 
         if (updateOrder.matchedCount > 0) {
-            const getOrderToResponse: any = await getCollection.findOne({ _id: new ObjectID(`${idFromParams}`) });
+            const getOrderToResponse: any = await getCollection.findOne(query);
             getOrderToResponse['id'] = getOrderToResponse['_id'];
             delete getOrderToResponse['_id'];
             return getOrderToResponse;
         } else {
-            throw 'Is not possible query the order!';
+            throw 'Order not found, is not possible update the order!';
         }
     }
 
-    static async createOneOrder(client: MongoClient, order: any) {
+    static async createOneOrder(client: MongoClient, body: any) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-
-        const createOrder = await getCollection.insertOne(order);
+        const createOrder = await getCollection.insertOne(body);
 
         if (createOrder.insertedId != null) {
-            const getNewOrder: any = await getCollection.findOne({ _id: order['_id'] });
+            const query = { _id: body['_id'] };
+            const getNewOrder: any = await getCollection.findOne(query);
+
             getNewOrder['id'] = getNewOrder['_id'];
             delete getNewOrder['_id'];
             return getNewOrder;
         } else {
-            throw 'Is not possible query the new order!';
+            throw 'Order not inserted, is not possible post the order!';
         }
     }
 
     static async deleteOneOrder(client: MongoClient, idFromParams: String) {
         const result = client.db('ShopProject');
         const getCollection = result.collection('orders');
-        const getOrder: any = await getCollection.findOne({ _id: new ObjectID(`${idFromParams}`) });
+
+        if (!ObjectID.isValid(`${idFromParams}`)) {
+            throw 'Invalid ID!';
+        }
+
+        const query = { _id: new ObjectID(`${idFromParams}`) };
+        const getOrder: any = await getCollection.findOne(query);
 
         if (getOrder != null) {
-            await getCollection.findOneAndDelete({ _id: new ObjectID(`${idFromParams}`) });
+            await getCollection.findOneAndDelete(query);
+
             getOrder['id'] = getOrder['_id'];
             delete getOrder['_id'];
             return getOrder;
         } else {
-            throw 'Is not possible query the order to delete!';
+            throw 'Oder not found, is not possible delete the order!';
         }
     }
 }

@@ -82,7 +82,7 @@ class ProductsController {
     static async createProduct(req: any, res: any) {
         const responseDB = await connection();
 
-        const id = new ObjectID().toString();
+        const id = new ObjectID();
         const product = req.body;
 
         product['_id'] = id;
